@@ -15,6 +15,13 @@ cp -avf "/ctx/system_files"/. /
 # this installs a package from fedora repos
 dnf5 install -y tmux
 
+# xfce dependencies
+dnf5 install -y xfwm4 xfce4-session xfce4-panel xfce4-settings \
+    Thunar xfce4-terminal
+
+# test suite
+dnf5 install sysbench
+
 # Use a COPR Example:
 #
 # dnf5 -y copr enable ublue-os/staging
