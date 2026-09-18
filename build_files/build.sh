@@ -20,7 +20,7 @@ dnf5 install -y xfwm4 xfce4-session xfce4-panel xfce4-settings \
     Thunar xfce4-terminal
 
 # test suite
-dnf5 install sysbench
+dnf5 install -y sysbench
 
 # Use a COPR Example:
 #
