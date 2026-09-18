@@ -37,8 +37,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     /ctx/build.sh
 
 # XFCE DESKTOP
-RUN dnf5 -y group install "Xfce" --setopt=install_weak_deps=False
-RUN dnf5 -y install lightdm lightdm-gtk-greeter
+RUN dnf install @base-x xfce4-session xfce4-settings xfce4-terminal xfdesktop thunar lightdm lightdm-gtk-greeter
 
 ### LINTING
 ## Verify final image and contents are correct.
