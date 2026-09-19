@@ -4,25 +4,7 @@ COPY build_files /
 COPY system_files /system_files
 
 # Base Image
-FROM quay.io/fedora/fedora-bootc:45
-## Other possible base images include:
-# FROM ghcr.io/ublue-os/bazzite:testing
-# FROM ghcr.io/ublue-os/aurora:stable
-# FROM ghcr.io/ublue-os/bluefin-nvidia-open:stable
-# 
-# ... and so on, here are more base images
-# Universal Blue Images: https://github.com/orgs/ublue-os/packages
-# Fedora base image: quay.io/fedora/fedora-bootc:44
-# CentOS base images: quay.io/centos-bootc/centos-bootc:stream10
-
-### [IM]MUTABLE /opt
-## Some bootable images, like Fedora, have /opt symlinked to /var/opt, in order to
-## make it mutable/writable for users. However, some packages write files to this directory,
-## thus its contents might be wiped out when bootc deploys an image, making it troublesome for
-## some packages. Eg, google-chrome, docker-desktop.
-##
-## Uncomment the following line if one desires to make /opt immutable and be able to be used
-## by the package manager.
+FROM quay.io/fedora/fedora-silverblue:45
 
 RUN rm -rf /opt && mkdir /opt
 
@@ -36,9 +18,17 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/build.sh
 
-# XFCE DESKTOP
-RUN dnf install -y @base-x xfce4-session xfce4-settings xfce4-terminal xfdesktop thunar lightdm lightdm-gtk-greeter
-RUN systemctl enable lightdm.service
+# Remove GNOME bloat
+RUN dnf5 -y remove \
+  firefox firefox-langpacks \
+  gnome-tour gnome-connections gnome-contacts \
+  gnome-maps gnome-music gnome-weather gnome-calculator \
+  gnome-calendar gnome-characters gnome-clocks gnome-font-viewer \
+  gnome-logs gnome-system-monitor gnome-remote-desktop \
+  gnome-software gnome-software-rpm-ostree \
+  simple-scan totem yelp malcontent \
+  gnome-classic-session gnome-extensions-app \
+  --allowerasing --skip-unavailable
 
 ### LINTING
 ## Verify final image and contents are correct.

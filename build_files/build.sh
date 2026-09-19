@@ -15,20 +15,17 @@ cp -avf "/ctx/system_files"/. /
 # this installs a package from fedora repos
 dnf5 install -y tmux
 
-# xfce dependencies
-dnf5 install -y xfwm4 xfce4-session xfce4-panel xfce4-settings \
-    Thunar xfce4-terminal
-
 # test suite
 dnf5 install -y sysbench
+dnf5 -y install gdb strace --setopt=install_weak_deps=False
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
-
-#### Example for enabling a System Unit File
+# stuff
+dnf5 install -y kitty
+dnf5 -y install \
+  lm_sensors smartmontools stress-ng dmidecode \
+  pciutils usbutils inxi powertop \
+  glx-utils vulkan-tools edid-decode \
+  iw ethtool usbguard \
+  --setopt=install_weak_deps=False --skip-unavailable
 
 systemctl enable podman.socket
